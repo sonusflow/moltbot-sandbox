@@ -30,6 +30,8 @@ export interface MoltbotEnv {
   MATTERMOST_BOT_TOKEN?: string; // Bot token from Mattermost
   MATTERMOST_URL?: string; // Mattermost server URL (e.g., https://chat.example.com)
   MATTERMOST_DM_POLICY?: string; // DM policy: 'pairing' (default), 'open', 'allowlist'
+  // Moonshot AI / Kimi configuration
+  MOONSHOT_API_KEY?: string; // API key from moonshot.ai
   // Cloudflare Access configuration for admin routes
   CF_ACCESS_TEAM_DOMAIN?: string; // e.g., 'myteam.cloudflareaccess.com'
   CF_ACCESS_AUD?: string; // Application Audience (AUD) tag

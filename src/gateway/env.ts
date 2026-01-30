@@ -55,6 +55,8 @@ export function buildEnvVars(env: MoltbotEnv): Record<string, string> {
   if (env.MATTERMOST_BOT_TOKEN) envVars.MATTERMOST_BOT_TOKEN = env.MATTERMOST_BOT_TOKEN;
   if (env.MATTERMOST_URL) envVars.MATTERMOST_URL = env.MATTERMOST_URL;
   if (env.MATTERMOST_DM_POLICY) envVars.MATTERMOST_DM_POLICY = env.MATTERMOST_DM_POLICY;
+  // Moonshot AI / Kimi
+  if (env.MOONSHOT_API_KEY) envVars.MOONSHOT_API_KEY = env.MOONSHOT_API_KEY;
   if (env.CDP_SECRET) envVars.CDP_SECRET = env.CDP_SECRET;
   if (env.WORKER_URL) envVars.WORKER_URL = env.WORKER_URL;
 
