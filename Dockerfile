@@ -11,9 +11,6 @@ RUN apt-get update && apt-get install -y xz-utils ca-certificates rsync \
     && node --version \
     && npm --version
 
-# Install pnpm globally
-RUN npm install -g pnpm
-
 # Install moltbot from npm (stable version)
 # Pin to specific version for reproducible builds
 RUN npm install -g clawdbot@2026.1.24-3 \
