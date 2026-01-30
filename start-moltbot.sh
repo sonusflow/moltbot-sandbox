@@ -211,10 +211,19 @@ if (process.env.SLACK_BOT_TOKEN && process.env.SLACK_APP_TOKEN) {
 // Mattermost configuration
 if (process.env.MATTERMOST_BOT_TOKEN && process.env.MATTERMOST_URL) {
     config.channels.mattermost = config.channels.mattermost || {};
-    config.channels.mattermost.botToken = process.env.MATTERMOST_BOT_TOKEN;
-    config.channels.mattermost.url = process.env.MATTERMOST_URL;
     config.channels.mattermost.enabled = true;
-    config.channels.mattermost.dmPolicy = process.env.MATTERMOST_DM_POLICY || 'pairing';
+    config.channels.mattermost.baseUrl = process.env.MATTERMOST_URL;
+    config.channels.mattermost.accounts = config.channels.mattermost.accounts || {};
+    config.channels.mattermost.accounts.cloudbot = {
+        name: 'CloudBot',
+        baseUrl: process.env.MATTERMOST_URL,
+        botToken: process.env.MATTERMOST_BOT_TOKEN,
+        enabled: true,
+        chatmode: 'onmessage',
+        dmPolicy: process.env.MATTERMOST_DM_POLICY || 'open',
+        groupPolicy: 'open',
+        groupAllowFrom: ['*']
+    };
 }
 
 // Base URL override (e.g., for Cloudflare AI Gateway)
