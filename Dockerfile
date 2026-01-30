@@ -20,7 +20,9 @@ RUN npm install -g clawdbot@2026.1.24-3 \
     && clawdbot --version
 
 # Install Mattermost plugin for chat integration
-RUN clawdbot plugins install @clawdbot/mattermost || echo "Mattermost plugin install skipped (may be bundled)"
+# Install zod dependency required by mattermost plugin
+RUN clawdbot plugins install @clawdbot/mattermost \
+    && cd /root/.clawdbot/extensions/mattermost && npm install zod
 
 # Create moltbot directories (paths still use clawdbot until upstream renames)
 # Templates are stored in /root/.clawdbot-templates for initialization
@@ -30,7 +32,7 @@ RUN mkdir -p /root/.clawdbot \
     && mkdir -p /root/clawd/skills
 
 # Copy startup script
-# Build cache bust: 2026-01-30-v27-mattermost
+# Build cache bust: 2026-01-30-v28-mattermost-zod
 COPY start-moltbot.sh /usr/local/bin/start-moltbot.sh
 RUN chmod +x /usr/local/bin/start-moltbot.sh
 
