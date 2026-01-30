@@ -208,6 +208,15 @@ if (process.env.SLACK_BOT_TOKEN && process.env.SLACK_APP_TOKEN) {
     config.channels.slack.enabled = true;
 }
 
+// Mattermost configuration
+if (process.env.MATTERMOST_BOT_TOKEN && process.env.MATTERMOST_URL) {
+    config.channels.mattermost = config.channels.mattermost || {};
+    config.channels.mattermost.botToken = process.env.MATTERMOST_BOT_TOKEN;
+    config.channels.mattermost.url = process.env.MATTERMOST_URL;
+    config.channels.mattermost.enabled = true;
+    config.channels.mattermost.dmPolicy = process.env.MATTERMOST_DM_POLICY || 'pairing';
+}
+
 // Base URL override (e.g., for Cloudflare AI Gateway)
 // Usage: Set AI_GATEWAY_BASE_URL or ANTHROPIC_BASE_URL to your endpoint like:
 //   https://gateway.ai.cloudflare.com/v1/{account_id}/{gateway_id}/anthropic
