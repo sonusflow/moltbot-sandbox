@@ -14,18 +14,10 @@ RUN apt-get update && apt-get install -y xz-utils ca-certificates rsync \
 # Install pnpm globally
 RUN npm install -g pnpm
 
-# Install moltbot from sonusflow/clawdbot fork (includes context percentage feature)
-# Clone, build, and link globally
-# CLAWDBOT_VERSION: change this value to bust Docker cache and pull latest fork
-ARG CLAWDBOT_VERSION=2026.1.30-v3
-RUN echo "Building clawdbot version: $CLAWDBOT_VERSION" \
-    && git clone --depth 1 https://github.com/sonusflow/clawdbot.git /tmp/clawdbot \
-    && cd /tmp/clawdbot \
-    && pnpm install --frozen-lockfile \
-    && pnpm build \
-    && npm link \
-    && clawdbot --version \
-    && rm -rf /tmp/clawdbot/.git
+# Install moltbot from npm (stable version)
+# Pin to specific version for reproducible builds
+RUN npm install -g clawdbot@2026.1.24-3 \
+    && clawdbot --version
 
 # Note: Mattermost plugin is bundled with clawdbot - no need to install separately
 
