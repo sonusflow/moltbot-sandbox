@@ -226,31 +226,6 @@ if (process.env.MATTERMOST_BOT_TOKEN && process.env.MATTERMOST_URL) {
     };
 }
 
-// Moonshot AI / Kimi configuration
-if (process.env.MOONSHOT_API_KEY) {
-    console.log('Configuring Moonshot provider with Kimi K2.5...');
-    config.models = config.models || {};
-    config.models.providers = config.models.providers || {};
-    config.models.providers.moonshot = {
-        baseUrl: 'https://api.moonshot.ai/v1',
-        apiKey: process.env.MOONSHOT_API_KEY,
-        api: 'openai-completions',
-        models: [
-            { id: 'kimi-k2-0905-preview', name: 'Kimi K2.5', contextWindow: 256000, maxTokens: 8192 },
-            { id: 'moonshot-v1-128k', name: 'Moonshot V1 128K', contextWindow: 128000, maxTokens: 8192 },
-        ]
-    };
-    // Add models to the allowlist
-    config.agents.defaults.models = config.agents.defaults.models || {};
-    config.agents.defaults.models['moonshot/kimi-k2-0905-preview'] = { alias: 'Kimi K2.5' };
-    config.agents.defaults.models['moonshot/moonshot-v1-128k'] = { alias: 'Moonshot 128K' };
-    // Set as primary model if no other provider configured
-    if (!process.env.AI_GATEWAY_BASE_URL && !process.env.ANTHROPIC_BASE_URL && !process.env.ANTHROPIC_API_KEY) {
-        config.agents.defaults.model.primary = 'moonshot/kimi-k2-0905-preview';
-        console.log('Moonshot Kimi K2.5 set as primary model');
-    }
-}
-
 // Base URL override (e.g., for Cloudflare AI Gateway)
 // Usage: Set AI_GATEWAY_BASE_URL or ANTHROPIC_BASE_URL to your endpoint like:
 //   https://gateway.ai.cloudflare.com/v1/{account_id}/{gateway_id}/anthropic
@@ -306,6 +281,29 @@ if (isOpenAI) {
 } else {
     // Default to Anthropic without custom base URL (uses built-in pi-ai catalog)
     config.agents.defaults.model.primary = 'anthropic/claude-opus-4-5';
+}
+
+// Moonshot AI / Kimi configuration (runs last to override primary model)
+if (process.env.MOONSHOT_API_KEY) {
+    console.log('Configuring Moonshot provider with Kimi K2.5...');
+    config.models = config.models || {};
+    config.models.providers = config.models.providers || {};
+    config.models.providers.moonshot = {
+        baseUrl: 'https://api.moonshot.ai/v1',
+        apiKey: process.env.MOONSHOT_API_KEY,
+        api: 'openai-completions',
+        models: [
+            { id: 'kimi-k2-0905-preview', name: 'Kimi K2.5', contextWindow: 256000, maxTokens: 8192 },
+            { id: 'moonshot-v1-128k', name: 'Moonshot V1 128K', contextWindow: 128000, maxTokens: 8192 },
+        ]
+    };
+    // Add models to the allowlist
+    config.agents.defaults.models = config.agents.defaults.models || {};
+    config.agents.defaults.models['moonshot/kimi-k2-0905-preview'] = { alias: 'Kimi K2.5' };
+    config.agents.defaults.models['moonshot/moonshot-v1-128k'] = { alias: 'Moonshot 128K' };
+    // Set Kimi K2.5 as primary model (overrides Anthropic/OpenAI)
+    config.agents.defaults.model.primary = 'moonshot/kimi-k2-0905-preview';
+    console.log('Moonshot Kimi K2.5 set as primary model');
 }
 
 // Write updated config
