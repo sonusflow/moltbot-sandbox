@@ -16,9 +16,10 @@ RUN npm install -g pnpm
 
 # Install moltbot from sonusflow/clawdbot fork (includes context percentage feature)
 # Clone, build, and link globally
-# CLAWDBOT_VERSION is used to bust cache when fork is updated
-ARG CLAWDBOT_VERSION=2026.1.30-v2
-RUN git clone --depth 1 https://github.com/sonusflow/clawdbot.git /tmp/clawdbot \
+# CLAWDBOT_VERSION: change this value to bust Docker cache and pull latest fork
+ARG CLAWDBOT_VERSION=2026.1.30-v3
+RUN echo "Building clawdbot version: $CLAWDBOT_VERSION" \
+    && git clone --depth 1 https://github.com/sonusflow/clawdbot.git /tmp/clawdbot \
     && cd /tmp/clawdbot \
     && pnpm install --frozen-lockfile \
     && pnpm build \
