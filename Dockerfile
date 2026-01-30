@@ -16,6 +16,8 @@ RUN npm install -g pnpm
 
 # Install moltbot from sonusflow/clawdbot fork (includes context percentage feature)
 # Clone, build, and link globally
+# CLAWDBOT_VERSION is used to bust cache when fork is updated
+ARG CLAWDBOT_VERSION=2026.1.30-v2
 RUN git clone --depth 1 https://github.com/sonusflow/clawdbot.git /tmp/clawdbot \
     && cd /tmp/clawdbot \
     && pnpm install --frozen-lockfile \
@@ -34,7 +36,7 @@ RUN mkdir -p /root/.clawdbot \
     && mkdir -p /root/clawd/skills
 
 # Copy startup script
-# Build cache bust: 2026-01-30-v31-context-percent
+# Build cache bust: 2026-01-30-v32-context-percent-fix
 COPY start-moltbot.sh /usr/local/bin/start-moltbot.sh
 RUN chmod +x /usr/local/bin/start-moltbot.sh
 
